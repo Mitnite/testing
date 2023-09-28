@@ -1,0 +1,42 @@
+.backdrop {
+  position: fixed;
+  z-index: 1000;
+  top: -50px;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(1, 7, 18, 0.35);
+}
+
+.main {
+  padding: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  position: fixed;
+  top: 100px;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  width: 400px;
+  border-radius: 12px;
+  background-color: white;
+  text-align: center;
+
+  .close-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+
+  .deny-button {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+  }
+
+  .submit-button {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  }
+}

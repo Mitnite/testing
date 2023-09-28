@@ -1,0 +1,17 @@
+<div class="info-container">
+
+  <p>Username: {{message.username}}</p>
+
+  <p>Date&Time: {{getDateTime(message.datetime)}}</p>
+
+  <p class="message-text">Message: {{message.message}}</p>
+
+  <button type="button" class="btn btn-success edit-button" (click)="isShowModal = true">Редактировать</button>
+
+</div>
+
+<ng-container *ngIf="isShowModal">
+  <modal-window (closeButton)="isShowModal = false" [message]="message" (newMessage)="updateMessage($event)">
+
+  </modal-window>
+</ng-container>

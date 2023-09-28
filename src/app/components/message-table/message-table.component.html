@@ -1,0 +1,114 @@
+<div class="add-button-container">
+
+  <form>
+    <div class="mb-3 row">
+      <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+      <div class="col-xs-3 col-sm-auto">
+        <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter"/>
+      </div>
+    </div>
+  </form>
+
+  <button type="button" class="btn btn-primary" (click)="isShowModal = true">Добавить</button>
+
+</div>
+
+<ng-container *ngIf="isShowModal">
+  <modal-window
+    (closeButton)="isShowModal = false"
+    (newMessage)="createMessage($event)">
+  </modal-window>
+</ng-container>
+
+
+<div class="table-container">
+  <div class="scroll">
+    <table class="message-table">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Username</th>
+        <th scope="col">Datetime</th>
+        <th scope="col">Message</th>
+        <th style="width: 50px"></th>
+      </tr>
+      </thead>
+
+      <tbody class="table-group-divider">
+      <ng-container *ngIf="filter.value">
+        <ng-container *ngFor="let message of MESSAGES; index as i">
+
+          <tr *ngIf="message.username.toLowerCase().includes(filter.value.toLowerCase())"
+              (click)="selectedIndex = i"
+              [style.background-color]="(selectedIndex !== -1 && selectedIndex === i) ? '#50c878' : undefined">
+            <th scope="row">{{message.id}}</th>
+            <td>
+              <ngb-highlight [result]="message.username" [term]="filter.value"></ngb-highlight>
+            </td>
+            <td>{{getDateTime(message.datetime)}}</td>
+            <td>
+              {{message.message.length < 100 ? message.message
+              : message.message.slice(0, 100) + '...'}}
+            </td>
+            <td>
+              <button type="button" class="btn-close delete-button" aria-label="Close"
+                      (click)="isShowDeleteMessage = true; selectedIndex = i"></button>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+
+
+      <ng-container *ngIf="!filter.value">
+        <tr *ngFor="let message of messages; index as i" (click)="selectedIndex = i"
+            [style.background-color]="(selectedIndex !== -1 && selectedIndex === i) ? '#50c878' : undefined">
+
+          <th scope="row">{{message.id}}</th>
+          <td> {{message.username}} </td>
+          <td> {{getDateTime(message.datetime)}} </td>
+          <td>
+            {{message.message.length < 100 ? message.message
+            : message.message.slice(0, 100) + '...'}}
+          </td>
+          <td>
+            <button type="button" class="btn-close delete-button" aria-label="Close"
+                    (click)="isShowDeleteMessage = true; selectedIndex = i"></button>
+          </td>
+
+
+        </tr>
+      </ng-container>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="editMessage">
+    <p class="info-title">Боковая панель</p>
+    <ng-container *ngIf="selectedIndex !== -1">
+      <message-info
+        [message]="messages[selectedIndex]"
+        (update)="updateMessage($event)">
+      </message-info>
+    </ng-container>
+  </div>
+</div>
+
+
+<ng-container *ngIf="!filter.value">
+  <div class="d-flex justify-content-between p-2">
+    <ngb-pagination
+      [collectionSize]="collectionSize"
+      [(page)]="page"
+      [pageSize]="pageSize"
+      (pageChange)="refresh()"
+    >
+    </ngb-pagination>
+  </div>
+</ng-container>
+
+
+<ng-container *ngIf="isShowDeleteMessage">
+  <delete-message (closeButton)="isShowDeleteMessage = false" (agreeButton)="deleteMessage()"
+                  [message]="messages[selectedIndex]"></delete-message>
+</ng-container>
