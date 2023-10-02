@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently --kill-others \"npm run starting\" \"npm run json:server\"",
+    "start": "concurrently \"npm run starting\" \"npm run json:server\"",
     "starting": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
@@ -24,6 +24,7 @@
     "@popperjs/core": "^2.11.6",
     "@types/axios": "^0.14.0",
     "bootstrap": "^5.2.3",
+    "concurrently": "^8.2.1",
     "json-server": "^0.17.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
